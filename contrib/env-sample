@@ -1,0 +1,4 @@
+DEBUG=True
+SECRET_KEY=defina sua chave completas
+ALLOWED_HOSTS=localhost, 127.0.0.1
+DATABASE_URL=your_postgresql_configuration
