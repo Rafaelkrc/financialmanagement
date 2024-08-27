@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+Gerenciador Financeiro - Moedas
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <h3 class="display-6">Cadastrar Moeda</h3>
+
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" class="form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+<a href="{% url 'currency_list' %}" class="btn btn-secondary mt-3">Cancelar e voltar para lista de Moedas</a>
+
+
+{% endblock %}
