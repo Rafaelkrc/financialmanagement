@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}
+Gerenciador Financeiro - Conta
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <h3 class="display-6">Apagar Conta</h3>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">{{ object.name }}</h3>
+            <p class="card-text">Banco: {{ object.bank }}</p>
+            <p class="card-text">IBAN: {{ object.iban }}</p>
+            <p class="card-text">Moeda: {{ object.currency_symbol }} - {{ object.currency }}</p>
+            <p class="card-text">Saldo inicial: {{ object.opening_balance }}</p>
+            <p>Ativa: {% if object.active %} Sim {% else %} Não {% endif %}</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Apagar</button>
+                <a href="{% url 'bank_account_list' %}" class="btn btn-secondary">Cancelar e Retornar para lista de Contas</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

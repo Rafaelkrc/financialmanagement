@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Gerenciador Financeiro - Moedas
+{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-6">
+        <form method="get" action="{% url 'currency_list' %}">
+            <div class="input-group">
+                <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.name }}">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <a href="{% url 'currency_create' %}" class="btn btn-success float-end">
+            <i class="bi bi-plus"></i> Nova Moeda
+        </a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Moeda</th>
+                <th>Simbolo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for coin in coins %}
+            <tr>
+                <td>{{ coin.id }}</td>
+                <td>{{ coin.name }}</td>
+                <td>{{ coin.symbol }}</td>
+                <td>
+                    <a href="{% url 'currency_detail' coin.id %}" class="btn btn-info btn-sm">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="{% url 'currency_update' coin.id %}" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="{% url 'currency_delete' coin.id %}" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

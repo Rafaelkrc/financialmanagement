@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+Gerenciador Financeiro - Moedas
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <h3 class="display-6">Apagar Moeda</h3>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Nome: {{ currency.name }}</h3>
+            <p class="card-text">Simbolo: {{ currency.symbol }}</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Apagar</button>
+                <a href="{% url 'currency_list' %}" class="btn btn-secondary">Cancel and
+                    Return</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
