@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+Gerenciador Financeiro - Cartão
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <h3 class="display-6">Apagar Cartão</h3>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">{{ object.name }}</h3>
+            <p class="card-text">Banco: {{ object.bank }}</p>
+            <p class="card-text">Moeda: {{ object.currency_symbol }} - {{ object.currency }}</p>
+            <p class="card-text">Limite de Crédito: {{ object.credit_limit }}</p>
+            <p class="card-text">Conta de Débito: {{ object.standart_debit_account }}</p>
+            <p class="card-text">Dia do Fechamento: {{ object.invoice_closing_date }}</p>
+            <p class="card-text">Dia do Vencimento: {{ object.day_of_invoice }}</p>
+            <p>Ativo: {% if object.active %} Sim {% else %} Não {% endif %}</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Apagar</button>
+                <a href="{% url 'credit_card_list' %}" class="btn btn-secondary">Cancelar e Retornar para lista de Cartões de Crédito</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

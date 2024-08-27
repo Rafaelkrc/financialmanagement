@@ -38,6 +38,7 @@ AUTH_USER_MODEL = 'base.User'
 INSTALLED_APPS = [
     'base',
     'bank_account',
+    'credit_cards',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
