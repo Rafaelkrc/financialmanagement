@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'base',
     'bank_account',
     'credit_cards',
+    'categories',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
