@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+Gerenciador Financeiro - Categorias
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <h3 class="display-6">Apagar Categoria</h3>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Nome: {{ category.name }}</h3>
+            <p class="card-text">Tipo: {{ category.type }}</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Apagar</button>
+                <a href="{% url 'category_list' %}" class="btn btn-secondary">Cancelar e Voltar para Categorias</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
