@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+Gerenciador Financeiro - SubCategorias
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <h3 class="display-6">Apagar SubCategoria</h3>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Nome: {{ subcategory.name }}</h3>
+            <p class="card-text">Categoria: {{ subcategory.category }}</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Apagar</button>
+                <a href="{% url 'subcategory_list' %}" class="btn btn-secondary">Cancelar e Voltar para SubCategorias</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
