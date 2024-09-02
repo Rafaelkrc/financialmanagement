@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Gerenciador Financeiro - Lançamentos
+{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-6">
+        <form method="get" action="{% url 'account_postings_list' %}">
+            <h2>Lançamentos do Mês de:</h2>
+            <div class="input-group">
+                <label class="input-group-text" id="basic-addon1" for="mes">Mês:</label>
+                <select class="form-select" name="mes">
+                    {% for month_number, month_name in months_pt.items %}
+                        <option value="{{ month_number }}" {% if month_number == selected_month %} selected {% endif %}>{{ month_name }}</option>
+                    {% endfor %}
+                </select>
+                
+                <label class="input-group-text" id="basic-addon1" for="ano">Ano:</label>
+                <input type="number" class="form-control" name="ano" value="{{ selected_year }}" min="2000" max="2100">
+                
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <a href="#" class="btn btn-success float-end">
+            <i class="bi bi-plus"></i> Nova Conta Bancária
+        </a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Data Emissão</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>SubCategoria</th>
+                <th>Banco</th>
+                <th>Vencimento</th>
+                <th>Valor</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account_posting in account_postings %}
+            <tr>
+                <td>{{ account_posting.issue_date|date:"d/m/Y" }}</td>
+                <td>{{ account_posting.description }}</td>
+                <td>{{ account_posting.category }}</td>
+                <td>{{ account_posting.subcategory }}</td>
+                <td>{{ account_posting.bank }}</td>
+                <td>{{ account_posting.expiry_date|date:"d/m/Y" }}</td>
+                <td>{{ account_posting.bank.currency.symbol }} 
+                    {% if account_posting.debit_value < 0 %}
+                        {{ account_posting.debit_value }}
+                    {% elif account_posting.credit_value != 0 %}
+                        {{ account_posting.credit_value }}
+                    {% else %}
+                        0,00
+                    {% endif %}
+                <td>
+                    <a href="#" class="btn btn-info btn-sm">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="#" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="#" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
