@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}
+Gerenciador Financeiro - Contas
+{% endblock %}
+
+{% block content %}
+<h3 class="display-6">Cadastrar Receita</h3>
+<div class="card">
+    <div class="card-body">
+        <form method="post" class="form">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.issue_date.label_tag }} {{ form.issue_date }}
+            </div>
+            <div class="mb-3">
+                {{ form.description.label_tag }} {{ form.description }}
+            </div>
+            <div class="mb-3">
+                {{ form.category.label_tag }} {{ form.category }} <!-- Elemento select já tem o ID 'id_category' automaticamente atribuído pelo Django -->
+            </div>
+            <div class="mb-3">
+                {{ form.subcategory.label_tag }} {{ form.subcategory }} <!-- Elemento select já tem o ID 'id_subcategory' automaticamente atribuído pelo Django -->
+            </div>
+            <div class="mb-3">
+                {{ form.bank.label_tag }} {{ form.bank }}
+            </div>
+            <div class="mb-3">
+                {{ form.expiry_date.label_tag }} {{ form.expiry_date }}
+            </div>
+            <div class="mb-3">
+                {{ form.credit_value.label_tag }} {{ form.credit_value }}
+            </div>
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Inicializa o datepicker
+    $(document).ready(function() {
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',       // Define o formato da data
+            autoclose: true,            // Fecha o calendário automaticamente ao selecionar uma data
+            todayHighlight: true,       // Destaque o dia atual
+            defaultViewDate: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() },
+            todayBtn: "linked"          // Adiciona um botão "Hoje" ao calendário
+        }).datepicker('setDate', new Date()); // Define a data atual como padrão
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Seleciona o campo de categoria usando o ID automaticamente gerado pelo Django
+        var categorySelect = document.getElementById('id_category');
+        var subcategorySelect = document.getElementById('id_subcategory');
+
+        if (categorySelect) {
+            categorySelect.addEventListener('change', function() {
+                var categoryId = this.value;
+
+                // Limpa subcategorias atuais
+                subcategorySelect.innerHTML = '<option value="">---------</option>';
+
+                if (categoryId) {
+                    // Requisição AJAX para a URL correta
+                    fetch(`/subcategory/${categoryId}/`)  // Verifique o caminho correto da URL
+                        .then(response => response.json())
+                        .then(data => {
+                            data.subcategories.forEach(subcategory => {
+                                var option = document.createElement('option');
+                                option.value = subcategory.id;
+                                option.text = subcategory.name;
+                                subcategorySelect.add(option);
+                            });
+                        })
+                        .catch(error => console.error('Erro ao carregar subcategorias:', error)); // Adicione tratamento de erro
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}

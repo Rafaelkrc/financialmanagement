@@ -6,10 +6,10 @@ Gerenciador Financeiro - Lançamentos
 {% endblock %}
 
 {% block content %}
+<h2>Lançamentos do Mês de:</h2>
 <div class="row mb-3">
     <div class="col-md-6">
         <form method="get" action="{% url 'account_postings_list' %}">
-            <h2>Lançamentos do Mês de:</h2>
             <div class="input-group">
                 <label class="input-group-text" id="basic-addon1" for="mes">Mês:</label>
                 <select class="form-select" name="mes">
@@ -26,9 +26,16 @@ Gerenciador Financeiro - Lançamentos
         </form>
     </div>
     <div class="col-md-6">
-        <a href="#" class="btn btn-success float-end">
-            <i class="bi bi-plus"></i> Nova Conta Bancária
-        </a>
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle float-end" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-plus"></i> Incluir Lançamento
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'account_postings_create_credit' %}"><i class="bi bi-plus"></i> Incluir Receita</a></li>
+              <li><a class="dropdown-item" href="{% url 'account_postings_create_debit' %}"><i class="bi bi-dash"></i> Incluir Despesa</a></li>
+              <li><a class="dropdown-item" href="#"><i class="bi bi-arrow-left-right"></i> Transferências</a></li>
+            </ul>
+        </div>
     </div>
 </div>
 <div class="table-responsive">
@@ -63,13 +70,16 @@ Gerenciador Financeiro - Lançamentos
                         0,00
                     {% endif %}
                 <td>
-                    <a href="#" class="btn btn-info btn-sm">
+                    <a href="{% url 'account_postings_detail' account_posting.id %}" class="btn btn-info btn-sm">
                         <i class="bi bi-eye"></i>
                     </a>
-                    <a href="#" class="btn btn-warning btn-sm">
+                    <a href="{% if account_posting.debit_value < 0 %}
+                                {% url 'account_postings_update_debit' account_posting.id %}
+                            {% elif account_posting.credit_value != 0 %}
+                                {% url 'account_postings_update_credit' account_posting.id %} {% endif %}" class="btn btn-warning btn-sm">
                         <i class="bi bi-pencil"></i>
                     </a>
-                    <a href="#" class="btn btn-danger btn-sm">
+                    <a href="{% url 'account_postings_delete' account_posting.id %}" class="btn btn-danger btn-sm">
                         <i class="bi bi-trash"></i>
                     </a>
                 </td>

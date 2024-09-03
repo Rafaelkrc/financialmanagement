@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}
-Gerenciador Financeiro - Contas
+Gerenciador Financeiro - Lançamentos
 {% endblock %}
 
 {% block content %}
 
 
 <div class="container mt-4">
-    <h3 class="display-6">Cadastrar Conta Bancária</h3>
+    <h3 class="display-6">Atualizar Lançamento de Crédito</h3>
 
 
     <div class="card">
@@ -15,12 +15,12 @@ Gerenciador Financeiro - Contas
             <form method="post" class="form">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <button type="submit" class="btn btn-primary">Atualizar</button>
             </form>
         </div>
     </div>
 </div>
-<a href="{% url 'bank_account_list' %}" class="btn btn-secondary mt-3">Cancelar e voltar para lista de Contas Bancárias</a>
+<a href="{% url 'account_postings_list' %}" class="btn btn-secondary mt-3">Cancelar e voltar para lista de Lançamentos</a>
 
 
 {% endblock %}

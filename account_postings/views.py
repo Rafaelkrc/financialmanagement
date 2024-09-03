@@ -1,9 +1,10 @@
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.utils import timezone
-from . import models
+from . import forms, models
 
 
-class AccounPostingListView(ListView):
+class AccountPostingListView(ListView):
     model = models.AccountPosting
     template_name = 'account_posting_list.html'
     context_object_name = 'account_postings'
@@ -33,3 +34,42 @@ class AccounPostingListView(ListView):
         context['selected_year'] = selected_year
         context['months_pt'] = self.months_pt
         return context
+
+
+class AccountPostingCreateDebitView(CreateView):
+    model = models.AccountPosting
+    form_class = forms.AccountPostingDebitForm
+    template_name = 'account_posting_create_debit.html'
+    success_url = reverse_lazy('account_postings_list')
+
+
+class AccountPostingCreateCreditView(CreateView):
+    model = models.AccountPosting
+    form_class = forms.AccountPostingCreditForm
+    template_name = 'account_posting_create_credit.html'
+    success_url = reverse_lazy('account_postings_list')
+
+
+class AccountPostingDetailView(DetailView):
+    model = models.AccountPosting
+    template_name = 'account_posting_detail.html'
+
+
+class AccountPostingUpdateCreditView(UpdateView):
+    model = models. AccountPosting
+    template_name = 'account_posting_update_credit.html'
+    form_class = forms.AccountPostingCreditForm
+    success_url = reverse_lazy('account_postings_list')
+
+
+class AccountPostingUpdateDebitView(UpdateView):
+    model = models. AccountPosting
+    template_name = 'account_posting_update_debit.html'
+    form_class = forms.AccountPostingDebitForm
+    success_url = reverse_lazy('account_postings_list')
+
+
+class AccountPostingDeleteView(DeleteView):
+    model = models.AccountPosting
+    template_name = 'account_posting_delete.html'
+    success_url = reverse_lazy('account_postings_list')
