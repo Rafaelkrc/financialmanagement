@@ -13,4 +13,5 @@ urlpatterns = [
     path('subcategory/<int:pk>/detail/', views.SubCategoryDetailView.as_view(), name='subcategory_detail'),
     path('subcategory/<int:pk>/update/', views.SubCategoryUpdateView.as_view(), name='subcategory_update'),
     path('subcategory/<int:pk>/delete/', views.SubCategoryDeleteView.as_view(), name='subcategory_delete'),
+    path('subcategory/<int:category_id>/', views.load_subcategories, name='load_subcategories')
 ]

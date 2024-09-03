@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}
+Gerenciador Financeiro - Lançamentos
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <h3 class="display-6">Detalhes do Lançamento</h3>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">{{ object.description }}</h3>
+            <p class="card-text">Data de lançamento: {{ object.create_date }}</p>
+            <p class="card-text">Emissão: {{ object.issue_date}}</p>
+            <p class="card-text">Categoria: {{ object.category }}</p>
+            <p class="card-text">Sub-categoria: {{ object.subcategory }}</p>
+            <p class="card-text">Banco: {{ object.bank }}</p>
+            <p class="card-text">Vencimento: {{ object.expiry_date }}</p>
+            <p class="card-text">Valor: {{ object.bank.currency.symbol }} 
+                {% if object.debit_value < 0 %}
+                    {{ object.debit_value }}
+                {% elif object.credit_value != 0 %}
+                    {{ object.credit_value }}
+                {% else %}
+                    0,00
+                {% endif %}</p>
+        </div>
+    </div>
+    <a href="{% url 'account_postings_list' %}" class="btn btn-secondary mt-3">Voltar para lista de Lançamentos</a>
+</div>
+
+
+{% endblock %}

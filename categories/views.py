@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from . import forms, models
@@ -77,3 +78,8 @@ class SubCategoryDeleteView(DeleteView):
     model = models.SubCategory
     template_name = 'subcategory_delete.html'
     success_url = reverse_lazy('subcategory_list')
+
+
+def load_subcategories(request, category_id):
+    subcategories = models.SubCategory.objects.filter(category_id=category_id).values('id', 'name')
+    return JsonResponse({'subcategories': list(subcategories)})
