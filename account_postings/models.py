@@ -1,7 +1,7 @@
 from django.db import models
 from categories.models import Category, SubCategory
 from bank_account.models import BankAccount
-from account_postings.metrics import add_bank_balance_on_debit, add_bank_balance_on_credit
+from account_postings.metrics import add_bank_balance_on_debit, add_bank_balance_on_credit, update_bank_balance
 
 
 class AccountPosting(models.Model):
@@ -16,12 +16,25 @@ class AccountPosting(models.Model):
     credit_value = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
     def save(self, *args, **kwargs):
+        # Verifica se o lançamento já existe no banco de dados
+        if self.pk:
+            original = AccountPosting.objects.get(pk=self.pk)
+
+            # Se houver uma alteração no débito, reverte o impacto do lançamento original
+            if original.debit_value != self.debit_value:
+                update_bank_balance(self.bank, original.debit_value)
+
+            # Se houver uma alteração no crédito, reverte o impacto do lançamento original
+            if original.credit_value != self.credit_value:
+                update_bank_balance(self.bank, original.credit_value)
+
         if self.credit_value < 0:
             self.credit_value = abs(self.credit_value)  # Garante que o valor seja positivo
         super().save(*args, **kwargs)
 
         if self.debit_value > 0:
-            self.debit_value = -self.debit_value  # Garante que o valor seja negativo
+            self.debit_value = -abs(self.debit_value)  # Garante que o valor seja negativo
+
         super().save(*args, **kwargs)
 
         # Atualiza o saldo com os novos valores
