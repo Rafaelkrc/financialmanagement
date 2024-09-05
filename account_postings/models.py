@@ -1,6 +1,7 @@
 from django.db import models
 from categories.models import Category, SubCategory
 from bank_account.models import BankAccount
+from account_postings.metrics import add_bank_balance_on_debit, add_bank_balance_on_credit
 
 
 class AccountPosting(models.Model):
@@ -15,14 +16,19 @@ class AccountPosting(models.Model):
     credit_value = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
     def save(self, *args, **kwargs):
-        # Garante que o valor seja sempre negativo
-        if self.debit_value > 0:
-            self.debit_value = -self.debit_value
+        if self.credit_value < 0:
+            self.credit_value = abs(self.credit_value)  # Garante que o valor seja positivo
         super().save(*args, **kwargs)
 
-        # Garante que o valor seja sempre positivo
-        if self.credit_value < 0:
-            self.credit_value = self.credit_value * -1
+        if self.debit_value > 0:
+            self.debit_value = -self.debit_value  # Garante que o valor seja negativo
+        super().save(*args, **kwargs)
+
+        # Atualiza o saldo com os novos valores
+        if self.debit_value != 0:
+            add_bank_balance_on_debit(self.bank, self.debit_value)
+        elif self.credit_value != 0:
+            add_bank_balance_on_credit(self.bank, self.credit_value)
         super().save(*args, **kwargs)
 
     def category_name(self):

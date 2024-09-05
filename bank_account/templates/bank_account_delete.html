@@ -15,7 +15,8 @@ Gerenciador Financeiro - Conta
             <p class="card-text">Banco: {{ object.bank }}</p>
             <p class="card-text">IBAN: {{ object.iban }}</p>
             <p class="card-text">Moeda: {{ object.currency_symbol }} - {{ object.currency }}</p>
-            <p class="card-text">Saldo inicial: {{ object.opening_balance }}</p>
+            <p class="card-text">Saldo Inicial: {{ object.opening_balance }}</p>
+            <p class="card-text">Saldo Atual: {{ object.current_balance }}</p>
             <p>Ativa: {% if object.active %} Sim {% else %} Não {% endif %}</p>
             <form method="post">
                 {% csrf_token %}
