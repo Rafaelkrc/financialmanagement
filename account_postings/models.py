@@ -44,6 +44,15 @@ class AccountPosting(models.Model):
             add_bank_balance_on_credit(self.bank, self.credit_value)
         super().save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        # Reverte o impacto do lançamento no saldo da conta bancária antes de deletá-lo
+        if self.debit_value != 0:
+            update_bank_balance(self.bank, self.debit_value)  # Reverte o débito
+        elif self.credit_value != 0:
+            update_bank_balance(self.bank, self.credit_value)  # Reverte o crédito
+
+        super().delete(*args, **kwargs)  # Deleta o lançamento
+
     def category_name(self):
         return self.category.name
     category_name.name = 'Category'
