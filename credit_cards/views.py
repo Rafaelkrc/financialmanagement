@@ -38,4 +38,4 @@ class CreditCardUpdateView(UpdateView):
 class CreditCardDeleteView(DeleteView):
     model = models.CreditCard
     template_name = 'credit_card_delete.html'
-    success_url = reverse_lazy('credit_card_list.html')
+    success_url = reverse_lazy('credit_card_list')

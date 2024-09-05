@@ -15,7 +15,7 @@ class CurrencyAdmin(ModelAdmin):
 
 @admin.register(BankAccount)
 class BankAccountAdmin(ModelAdmin):
-    list_display = ('name', 'bank', 'iban', 'opening_balance', 'currency_symbol', 'active')
+    list_display = ('name', 'bank', 'iban', 'opening_balance', 'currency_symbol', 'current_balance', 'active')
     search_fields = ('name', 'bank',)
     ordering = ('name', 'bank',)
 

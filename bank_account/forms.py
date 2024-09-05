@@ -23,6 +23,7 @@ class BankAccountForm(forms.ModelForm):
             'iban': forms.TextInput(attrs={'class': 'form-control'}),
             'currency': forms.Select(attrs={'class': 'form-control'}),
             'opening_balance': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'current_balance': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
             'active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
         labels = {
@@ -31,5 +32,6 @@ class BankAccountForm(forms.ModelForm):
             'iban': 'IBAN',
             'currency': 'Moeda',
             'opening_balance': 'Saldo Inicial',
+            'current_balance': 'Saldo Atual',
             'active': 'Ativa',
         }
