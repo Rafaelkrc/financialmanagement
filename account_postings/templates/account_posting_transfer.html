@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}
+Gerenciador Financeiro - Lançamentos
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <h2 class="display-6">Realizar Transferência</h2>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-body">
+      <form method="post" class="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Transferir</button>
+      </form>
+    </div>
+  </div> 
+</div>
+<a href="{% url 'account_postings_list' %}" class="btn btn-secondary mt-3">Voltar</a>
+
+<script>
+  // Inicializa o datepicker
+  $(document).ready(function() {
+      $('.datepicker').datepicker({
+          format: 'dd/mm/yyyy',       // Define o formato da data
+          autoclose: true,            // Fecha o calendário automaticamente ao selecionar uma data
+          todayHighlight: true,       // Destaque o dia atual
+          defaultViewDate: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() },
+          todayBtn: "linked"          // Adiciona um botão "Hoje" ao calendário
+      }).datepicker('setDate', new Date()); // Define a data atual como padrão
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Seleciona o campo de categoria usando o ID automaticamente gerado pelo Django
+      var categorySelect = document.getElementById('id_category');
+      var subcategorySelect = document.getElementById('id_subcategory');
+
+      if (categorySelect) {
+        // Define um valor fixo para a categoria
+        categorySelect.value = "1";  // Substitua pelo ID real da categoria fixa
+        categorySelect.setAttribute("disabled", "disabled"); // Impede alterações
+
+        var categoryId = categorySelect.value;
+
+              // Limpa subcategorias atuais
+              subcategorySelect.innerHTML = '<option value="">---------</option>';
+
+              if (categoryId) {
+                  // Requisição AJAX para a URL correta
+                  fetch(`/subcategory/${categoryId}/`)  // Verifique o caminho correto da URL
+                      .then(response => response.json())
+                      .then(data => {
+                          data.subcategories.forEach(subcategory => {
+                              var option = document.createElement('option');
+                              option.value = subcategory.id;
+                              option.text = subcategory.name;
+                              subcategorySelect.add(option);
+                          });
+                      })
+                      .catch(error => console.error('Erro ao carregar subcategorias:', error)); // Adicione tratamento de erro
+              }
+          });
+      }
+  });
+</script>
+{% endblock %}
