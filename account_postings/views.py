@@ -1,5 +1,7 @@
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic.edit import FormView
 from django.utils import timezone
 from . import forms, models
 
@@ -56,14 +58,14 @@ class AccountPostingDetailView(DetailView):
 
 
 class AccountPostingUpdateCreditView(UpdateView):
-    model = models. AccountPosting
+    model = models.AccountPosting
     template_name = 'account_posting_update_credit.html'
     form_class = forms.AccountPostingCreditForm
     success_url = reverse_lazy('account_postings_list')
 
 
 class AccountPostingUpdateDebitView(UpdateView):
-    model = models. AccountPosting
+    model = models.AccountPosting
     template_name = 'account_posting_update_debit.html'
     form_class = forms.AccountPostingDebitForm
     success_url = reverse_lazy('account_postings_list')
@@ -73,3 +75,37 @@ class AccountPostingDeleteView(DeleteView):
     model = models.AccountPosting
     template_name = 'account_posting_delete.html'
     success_url = reverse_lazy('account_postings_list')
+
+
+class AccountPostingTransferView(FormView):
+    template_name = 'account_posting_transfer.html'
+    form_class = forms.AccountPostingTransferForm
+    success_url = reverse_lazy('account_postings_list')
+
+    def form_valid(self, form):
+        from_bank = form.cleaned_data["from_bank"]
+        to_bank = form.cleaned_data["to_bank"]
+        value = form.cleaned_data["value"]
+        category = form.cleaned_data["category"]
+        subcategory = form.cleaned_data["subcategory"]
+        description = form.cleaned_data["description"]
+        issue_date = form.cleaned_data["issue_date"]
+        expiry_date = form.cleaned_data["expiry_date"]
+
+        try:
+            models.AccountPosting.transfer(
+                from_bank=from_bank,
+                to_bank=to_bank,
+                value=value,
+                category=category,
+                subcategory=subcategory,
+                description=description,
+                issue_date=issue_date,
+                expiry_date=expiry_date,
+            )
+            messages.success(self.request, "Transferência realizada com sucesso!")
+        except Exception as e:
+            messages.error(self.request, f"Erro ao realizar a transferência: {str(e)}")
+            return self.form_invalid(form)
+
+        return super().form_valid(form)

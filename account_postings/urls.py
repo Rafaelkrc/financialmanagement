@@ -9,4 +9,6 @@ urlpatterns = [
     path('account_postings/<int:pk>/update/credit/', views.AccountPostingUpdateCreditView.as_view(), name='account_postings_update_credit'),
     path('account_postings/<int:pk>/update/debit/', views.AccountPostingUpdateDebitView.as_view(), name='account_postings_update_debit'),
     path('account_postings/<int:pk>/delete/', views.AccountPostingDeleteView.as_view(), name='account_postings_delete'),
+    path('account_postings/transfer/', views.AccountPostingTransferView.as_view(), name='account_postings_transfer'),
+    path('account_postings/<int:pk>/update/transfer/', views.AccountPostingTransferView.as_view(), name='account_postings_transfer'),
 ]
