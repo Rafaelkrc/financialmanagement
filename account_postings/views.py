@@ -1,10 +1,11 @@
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.utils import timezone
 from . import forms, models
 
 
-class AccountPostingListView(ListView):
+class AccountPostingListView(LoginRequiredMixin, ListView):
     model = models.AccountPosting
     template_name = 'account_posting_list.html'
     context_object_name = 'account_postings'
@@ -36,40 +37,40 @@ class AccountPostingListView(ListView):
         return context
 
 
-class AccountPostingCreateDebitView(CreateView):
+class AccountPostingCreateDebitView(LoginRequiredMixin, CreateView):
     model = models.AccountPosting
     form_class = forms.AccountPostingDebitForm
     template_name = 'account_posting_create_debit.html'
     success_url = reverse_lazy('account_postings_list')
 
 
-class AccountPostingCreateCreditView(CreateView):
+class AccountPostingCreateCreditView(LoginRequiredMixin, CreateView):
     model = models.AccountPosting
     form_class = forms.AccountPostingCreditForm
     template_name = 'account_posting_create_credit.html'
     success_url = reverse_lazy('account_postings_list')
 
 
-class AccountPostingDetailView(DetailView):
+class AccountPostingDetailView(LoginRequiredMixin, DetailView):
     model = models.AccountPosting
     template_name = 'account_posting_detail.html'
 
 
-class AccountPostingUpdateCreditView(UpdateView):
+class AccountPostingUpdateCreditView(LoginRequiredMixin, UpdateView):
     model = models. AccountPosting
     template_name = 'account_posting_update_credit.html'
     form_class = forms.AccountPostingCreditForm
     success_url = reverse_lazy('account_postings_list')
 
 
-class AccountPostingUpdateDebitView(UpdateView):
+class AccountPostingUpdateDebitView(LoginRequiredMixin, UpdateView):
     model = models. AccountPosting
     template_name = 'account_posting_update_debit.html'
     form_class = forms.AccountPostingDebitForm
     success_url = reverse_lazy('account_postings_list')
 
 
-class AccountPostingDeleteView(DeleteView):
+class AccountPostingDeleteView(LoginRequiredMixin, DeleteView):
     model = models.AccountPosting
     template_name = 'account_posting_delete.html'
     success_url = reverse_lazy('account_postings_list')
