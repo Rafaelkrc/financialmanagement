@@ -1,10 +1,11 @@
 from django.http import JsonResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from . import forms, models
 
 
-class CategoryListView(ListView):
+class CategoryListView(LoginRequiredMixin, ListView):
     model = models.Category
     template_name = 'category_list.html'
     context_object_name = 'categories'
@@ -17,32 +18,32 @@ class CategoryListView(ListView):
         return queryset
 
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = models.Category
     template_name = 'category_create.html'
     form_class = forms.CategoryForm
     success_url = reverse_lazy('category_list')
 
 
-class CategoryDetailView(DetailView):
+class CategoryDetailView(LoginRequiredMixin, DetailView):
     model = models.Category
     template_name = 'category_detail.html'
 
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = models.Category
     template_name = 'category_update.html'
     form_class = forms.CategoryForm
     success_url = reverse_lazy('category_list')
 
 
-class CategoryDeleteView(DeleteView):
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Category
     template_name = 'category_delete.html'
     success_url = reverse_lazy('category_list')
 
 
-class SubCategoryListView(ListView):
+class SubCategoryListView(LoginRequiredMixin, ListView):
     model = models.SubCategory
     template_name = 'subcategory_list.html'
     context_object_name = 'subcategories'
@@ -55,26 +56,26 @@ class SubCategoryListView(ListView):
         return queryset
 
 
-class SubCategoryCreateView(CreateView):
+class SubCategoryCreateView(LoginRequiredMixin, CreateView):
     model = models.SubCategory
     template_name = 'subcategory_create.html'
     form_class = forms.SubCategoryForm
     success_url = reverse_lazy('subcategory_list')
 
 
-class SubCategoryDetailView(DetailView):
+class SubCategoryDetailView(LoginRequiredMixin, DetailView):
     model = models.SubCategory
     template_name = 'subcategory_detail.html'
 
 
-class SubCategoryUpdateView(UpdateView):
+class SubCategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = models.SubCategory
     template_name = 'subcategory_update.html'
     form_class = forms.SubCategoryForm
     success_url = reverse_lazy('subcategory_list')
 
 
-class SubCategoryDeleteView(DeleteView):
+class SubCategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = models.SubCategory
     template_name = 'subcategory_delete.html'
     success_url = reverse_lazy('subcategory_list')

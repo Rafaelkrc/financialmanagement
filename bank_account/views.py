@@ -1,9 +1,10 @@
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from . import forms, models
 
 
-class CurrencyListView(ListView):
+class CurrencyListView(LoginRequiredMixin, ListView):
     model = models.Currency
     template_name = 'currency_list.html'
     context_object_name = 'coins'
@@ -16,32 +17,32 @@ class CurrencyListView(ListView):
         return queryset
 
 
-class CurrencyCreateView(CreateView):
+class CurrencyCreateView(LoginRequiredMixin, CreateView):
     model = models.Currency
     form_class = forms.CurrencyForm
     template_name = 'currency_create.html'
     success_url = reverse_lazy('currency_list')
 
 
-class CurrencyDetailView(DetailView):
+class CurrencyDetailView(LoginRequiredMixin, DetailView):
     model = models.Currency
     template_name = 'currency_detail.html'
 
 
-class CurrencyUpdateView(UpdateView):
+class CurrencyUpdateView(LoginRequiredMixin, UpdateView):
     model = models.Currency
     template_name = 'currency_update.html'
     form_class = forms.CurrencyForm
     success_url = reverse_lazy('currency_list')
 
 
-class CurrencyDeleteView(DeleteView):
+class CurrencyDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Currency
     template_name = 'currency_delete.html'
     success_url = reverse_lazy('currency_list')
 
 
-class BankAccountListView(ListView):
+class BankAccountListView(LoginRequiredMixin, ListView):
     model = models.BankAccount
     template_name = 'bank_account_list.html'
     context_object_name = 'bank_accounts'
@@ -57,26 +58,26 @@ class BankAccountListView(ListView):
         return queryset
 
 
-class BankAccountCreateView(CreateView):
+class BankAccountCreateView(LoginRequiredMixin, CreateView):
     model = models.BankAccount
     form_class = forms.BankAccountForm
     template_name = 'bank_account_create.html'
     success_url = reverse_lazy('bank_account_list')
 
 
-class BankAccountDetailView(DetailView):
+class BankAccountDetailView(LoginRequiredMixin, DetailView):
     model = models.BankAccount
     template_name = 'bank_account_detail.html'
 
 
-class BankAccountUpdateView(UpdateView):
+class BankAccountUpdateView(LoginRequiredMixin, UpdateView):
     model = models.BankAccount
     template_name = 'bank_account_update.html'
     form_class = forms.BankAccountForm
     success_url = reverse_lazy('bank_account_list')
 
 
-class BankAccountDeleteView(DeleteView):
+class BankAccountDeleteView(LoginRequiredMixin, DeleteView):
     model = models.BankAccount
     template_name = 'bank_account_delete.html'
     success_url = reverse_lazy('bank_account_list')
